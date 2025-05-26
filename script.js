@@ -1,9 +1,11 @@
 let firstNumber, secondNumber, operator;
-let display = document.querySelector(".display p");
+let displayFull = document.querySelector(".full");
+let displayCurrent = document.querySelector(".current");
 let buttons = document.querySelector(".buttons");
 let digits = document.querySelectorAll(".digit");
 let operators = document.querySelectorAll(".operator");
-let clear = document.querySelector(".clear");
+let result = document.querySelector(".result");
+let clearBtn = document.querySelector(".clear");
 
 
 function add(a, b) {
@@ -38,20 +40,44 @@ function operate(operator, a, b) {
 }
 
 function takeInput() {
-    let firstNumber, secondNumber;
+    let firstNumber, secondNumber, selectedOperator;
     digits.forEach(digit => {
         digit.addEventListener("click", (e) => {
-            display.textContent += digit.innerHTML
+             if (firstNumber && secondNumber) {
+                firstNumber = secondNumber = null;
+                displayCurrent.innerHTML = "";
+                displayFull.innerHTML = "";
+            } else if (firstNumber) {
+                displayCurrent.innerHTML = "";
+            }
+            displayFull.textContent += digit.innerHTML;
+            displayCurrent.textContent += digit.innerHTML;
         })
     })
 
     operators.forEach(operator => {
         operator.addEventListener("click", (e) => {
-            firstNumber = display.textContent;
-            //console.log(firstNumber)
+            firstNumber = displayCurrent.textContent;
+            selectedOperator = e.target.textContent;
+            //displayCurrent.innerHTML = "";
+            displayFull.innerHTML += operator.innerHTML;
+            //console.log(e.target.textContent)
         })
     })
 
+    result.addEventListener("click", () => {
+        secondNumber = displayCurrent.textContent;
+        displayCurrent.textContent = operate(selectedOperator, +firstNumber, +secondNumber);
+    })
+
+    
+    clearBtn.addEventListener("click", () => {
+        firstNumber = secondNumber = null;
+        displayCurrent.innerHTML = displayFull.innerHTML = "";
+    })
+    
+
 }
+
 
 takeInput()
