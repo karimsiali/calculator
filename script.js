@@ -1,6 +1,9 @@
 let firstNumber, secondNumber, operator;
-
-
+let display = document.querySelector(".display p");
+let buttons = document.querySelector(".buttons");
+let digits = document.querySelectorAll(".digit");
+let operators = document.querySelectorAll(".operator");
+let clear = document.querySelector(".clear");
 
 
 function add(a, b) {
@@ -25,11 +28,30 @@ function operate(operator, a, b) {
             return add(a, b);
         case "-":
             return subtract(a, b);
-        case "*":
+        case "x":
             return multiply(a, b);
         case "/":
             return divide(a, b);
-        case default:
+        default:
             return "ERROR";
     }
 }
+
+function takeInput() {
+    let firstNumber, secondNumber;
+    digits.forEach(digit => {
+        digit.addEventListener("click", (e) => {
+            display.textContent += digit.innerHTML
+        })
+    })
+
+    operators.forEach(operator => {
+        operator.addEventListener("click", (e) => {
+            firstNumber = display.textContent;
+            //console.log(firstNumber)
+        })
+    })
+
+}
+
+takeInput()
