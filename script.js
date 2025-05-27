@@ -40,10 +40,10 @@ function operate(operator, a, b) {
 }
 
 function takeInput() {
-    let firstNumber, secondNumber, selectedOperator;
+    let firstNumber, secondNumber, selectedOperator, displayResult;
     digits.forEach(digit => {
         digit.addEventListener("click", (e) => {
-             if (firstNumber && secondNumber) {
+             if (displayResult) {
                 firstNumber = secondNumber = null;
                 displayCurrent.innerHTML = "";
                 displayFull.innerHTML = "";
@@ -57,22 +57,28 @@ function takeInput() {
 
     operators.forEach(operator => {
         operator.addEventListener("click", (e) => {
+            console.log(selectedOperator)
+            if (selectedOperator) {
+                firstNumber = operate(selectedOperator, +firstNumber, +secondNumber);
+                displayFull.textContent = firstNumber;
+                selectedOperator = e.target.textContent;
+            }
             firstNumber = displayCurrent.textContent;
             selectedOperator = e.target.textContent;
-            //displayCurrent.innerHTML = "";
             displayFull.innerHTML += operator.innerHTML;
-            //console.log(e.target.textContent)
         })
     })
 
     result.addEventListener("click", () => {
         secondNumber = displayCurrent.textContent;
-        displayCurrent.textContent = operate(selectedOperator, +firstNumber, +secondNumber);
+        displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
+        displayCurrent.textContent = displayResult;
+        firstNumber = secondNumber = selectedOperator = null;
     })
 
     
     clearBtn.addEventListener("click", () => {
-        firstNumber = secondNumber = null;
+        firstNumber = secondNumber = selectedOperator = displayResult = null;
         displayCurrent.innerHTML = displayFull.innerHTML = "";
     })
     
