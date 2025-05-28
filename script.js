@@ -43,29 +43,34 @@ function takeInput() {
     let firstNumber, secondNumber, selectedOperator, displayResult;
     digits.forEach(digit => {
         digit.addEventListener("click", (e) => {
-             if (displayResult) {
-                firstNumber = secondNumber = null;
-                displayCurrent.innerHTML = "";
-                displayFull.innerHTML = "";
-            } else if (firstNumber) {
-                displayCurrent.innerHTML = "";
+            if (displayResult) {
+                clear();
             }
-            displayFull.textContent += digit.innerHTML;
-            displayCurrent.textContent += digit.innerHTML;
+            displayCurrent.textContent += e.target.textContent;
+            displayFull.textContent += e.target.textContent;
+             
         })
     })
 
     operators.forEach(operator => {
         operator.addEventListener("click", (e) => {
-            console.log(selectedOperator)
+            if (displayResult) {
+                firstNumber = displayResult;
+                displayFull = displayResult + selectedOperator;
+            }
             if (selectedOperator) {
+                secondNumber = displayCurrent.textContent;
                 firstNumber = operate(selectedOperator, +firstNumber, +secondNumber);
                 displayFull.textContent = firstNumber;
-                selectedOperator = e.target.textContent;
+            } else if (firstNumber) {
+                secondNumber = displayCurrent.textContent;
+            } else {
+                firstNumber = displayCurrent.textContent;
             }
-            firstNumber = displayCurrent.textContent;
+            
+            displayCurrent.innerHTML = "";
             selectedOperator = e.target.textContent;
-            displayFull.innerHTML += operator.innerHTML;
+            displayFull.textContent += selectedOperator;
         })
     })
 
@@ -73,14 +78,16 @@ function takeInput() {
         secondNumber = displayCurrent.textContent;
         displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
         displayCurrent.textContent = displayResult;
-        firstNumber = secondNumber = selectedOperator = null;
     })
 
     
-    clearBtn.addEventListener("click", () => {
+    clearBtn.addEventListener("click", clear);
+
+
+    function clear() {
         firstNumber = secondNumber = selectedOperator = displayResult = null;
         displayCurrent.innerHTML = displayFull.innerHTML = "";
-    })
+    }
     
 
 }
