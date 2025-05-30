@@ -47,37 +47,42 @@ function takeInput() {
                 clear();
             }
             displayCurrent.textContent += e.target.textContent;
-            displayFull.textContent += e.target.textContent;
-             
+            displayFull.textContent += e.target.textContent;           
         })
     })
 
     operators.forEach(operator => {
-        operator.addEventListener("click", (e) => {
-            if (displayResult) {
-                firstNumber = displayResult;
-                displayFull = displayResult + selectedOperator;
-            }
-            if (selectedOperator) {
-                secondNumber = displayCurrent.textContent;
-                firstNumber = operate(selectedOperator, +firstNumber, +secondNumber);
-                displayFull.textContent = firstNumber;
-            } else if (firstNumber) {
-                secondNumber = displayCurrent.textContent;
+        operator.addEventListener("click", (e) => {            
+            if (!firstNumber && !selectedOperator) {
+                firstNumber = +displayCurrent.textContent;      
+                selectedOperator = e.target.textContent;
+                displayFull.textContent += selectedOperator;
+                displayCurrent.textContent = "";               
+            } else if (!displayResult) {
+                selectedOperator = e.target.textContent;
+                displayFull.textContent = firstNumber + selectedOperator;
             } else {
+                displayResult = null;
                 firstNumber = displayCurrent.textContent;
+                selectedOperator = e.target.textContent;
+                displayFull.textContent = firstNumber + selectedOperator;
+                displayCurrent.textContent = "";
             }
             
-            displayCurrent.innerHTML = "";
-            selectedOperator = e.target.textContent;
-            displayFull.textContent += selectedOperator;
         })
     })
 
     result.addEventListener("click", () => {
-        secondNumber = displayCurrent.textContent;
-        displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
-        displayCurrent.textContent = displayResult;
+        
+        if (!firstNumber || !selectedOperator) {
+            displayResult = +(displayCurrent.textContent);
+            displayCurrent.textContent = displayResult;
+        } else {            
+            secondNumber = displayCurrent.textContent;
+            displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
+            displayCurrent.textContent = displayResult;
+        }
+        
     })
 
     
