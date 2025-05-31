@@ -6,6 +6,7 @@ let digits = document.querySelectorAll(".digit");
 let operators = document.querySelectorAll(".operator");
 let result = document.querySelector(".result");
 let clearBtn = document.querySelector(".clear");
+let deleteBtn = document.querySelector(".back");
 let dot = document.querySelector(".dot");
 
 dotPressed = false;
@@ -137,6 +138,19 @@ function takeInput() {
             displayCurrent.textContent += ".";
             displayFull.textContent += ".";
             dotPressed = true;
+        }
+    })
+
+    deleteBtn.addEventListener("click", () => {
+        if (displayCurrent) {
+            displayCurrent.textContent = displayCurrent.textContent.slice(0, -1);
+            displayFull.textContent = displayFull.textContent.slice(0, -1);
+        }
+        if (displayCurrent.textContent == "0") {
+            displayCurrent.textContent = "";
+        }
+        if (displayFull.textContent == "0") {
+            displayFull.textContent = "";
         }
     })
     
