@@ -12,19 +12,19 @@ dotPressed = false;
 
 
 function add(a, b) {
-    return Math.round((a + b) * (100 * 100)) / (100 * 100);
+    return Math.round((a + b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
 }
 
 function subtract(a, b) {
-    return Math.round((a - b) * (100 * 100)) / (100 * 100);
+    return Math.round((a - b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
 }
 
 function multiply(a, b) {
-    return Math.round((a * b) * (100 * 100)) / (100 * 100);
+    return Math.round((a * b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
 }
 
 function divide(a, b) {
-    return Math.round((a / b) * (100 * 100)) / (100 * 100);
+    return Math.round((a / b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
 }
 
 function operate(operator, a, b) {
@@ -58,30 +58,46 @@ function takeInput() {
     })
 
     operators.forEach(operator => {
-        operator.addEventListener("click", (e) => {            
+        operator.addEventListener("click", (e) => {  
+            if (displayCurrent.textContent == "ERROR") {
+                displayCurrent.textContent = "";
+            }
             if (!firstNumber && !selectedOperator) {
-                console.log("ya")
-                firstNumber = +displayCurrent.textContent;
-                console.log(firstNumber)
+                firstNumber = displayCurrent.textContent;
                 selectedOperator = e.target.textContent;
                 displayFull.textContent += selectedOperator;
                 displayCurrent.textContent = "";
                 dotPressed = false;
             } else if (firstNumber && selectedOperator && !displayResult) {
-                secondNumber = displayCurrent.textContent;
-                displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
-                displayFull.textContent = displayResult + e.target.textContent;
-                firstNumber = displayResult;
-                selectedOperator = e.target.textContent
-                displayCurrent.textContent = "";
-                displayResult = null;
-                dotPressed = false;
+                secondNumber = displayCurrent.textContent;                              
+                if (+secondNumber != 0) {
+                    displayResult = operate(selectedOperator, +firstNumber, +secondNumber);                  
+                    displayFull.textContent = displayResult + e.target.textContent;
+                    firstNumber = displayResult;
+                    displayCurrent.textContent = "";
+                    selectedOperator = e.target.textContent;
+                    displayResult = null;
+                    dotPressed = false;
+                } else {
+                    displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
+                    if (displayResult == "ERROR") {
+                        clear();
+                        displayCurrent.textContent = "ERROR";
+                    } else {
+                        secondNumber = null;
+                        displayFull.textContent = firstNumber + e.target.textContent;
+                        displayCurrent.textContent = "";
+                        selectedOperator = e.target.textContent;
+                    }
+                    
+                }
+                
+                
             } else if (!displayResult && firstNumber != 0) {
-                console.log("no dis")
                 selectedOperator = e.target.textContent;
                 displayFull.textContent = firstNumber + selectedOperator;
                 dotPressed = false;
-            } else { /* TODO*/
+            } else {
                 displayResult = null;
                 firstNumber = displayCurrent.textContent;
                 selectedOperator = e.target.textContent;
