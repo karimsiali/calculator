@@ -59,15 +59,16 @@ function takeInput() {
 
     operators.forEach(operator => {
         operator.addEventListener("click", (e) => {  
-            if (displayCurrent.textContent == "ERROR") {
+            dotPressed = false;
+            /*if (displayCurrent.textContent == "ERROR") {
                 displayCurrent.textContent = "";
-            }
+            }*/
             if (!firstNumber && !selectedOperator) {
                 firstNumber = displayCurrent.textContent;
                 selectedOperator = e.target.textContent;
                 displayFull.textContent += selectedOperator;
                 displayCurrent.textContent = "";
-                dotPressed = false;
+                
             } else if (firstNumber && selectedOperator && !displayResult) {
                 secondNumber = displayCurrent.textContent;                              
                 if (+secondNumber != 0) {
@@ -77,33 +78,24 @@ function takeInput() {
                     displayCurrent.textContent = "";
                     selectedOperator = e.target.textContent;
                     displayResult = null;
-                    dotPressed = false;
-                } else {
-                    displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
-                    if (displayResult == "ERROR") {
-                        clear();
-                        displayCurrent.textContent = "ERROR";
-                    } else {
-                        secondNumber = null;
-                        displayFull.textContent = firstNumber + e.target.textContent;
-                        displayCurrent.textContent = "";
-                        selectedOperator = e.target.textContent;
-                    }
                     
+                } else {   
+                    displayCurrent.textContent = "";
+                    displayFull.textContent = firstNumber + e.target.textContent;
+                    selectedOperator = e.target.textContent;
                 }
                 
-                
-            } else if (!displayResult && firstNumber != 0) {
+            } else if (!displayResult && firstNumber != 0) {                
                 selectedOperator = e.target.textContent;
                 displayFull.textContent = firstNumber + selectedOperator;
-                dotPressed = false;
+                
             } else {
                 displayResult = null;
                 firstNumber = displayCurrent.textContent;
                 selectedOperator = e.target.textContent;
                 displayFull.textContent = firstNumber + selectedOperator;
                 displayCurrent.textContent = "";
-                dotPressed = false;
+                
             }
             
         })
@@ -136,11 +128,12 @@ function takeInput() {
     function clear() {
         firstNumber = secondNumber = selectedOperator = displayResult = null;
         displayCurrent.innerHTML = displayFull.innerHTML = "";
+        dotPressed = false;
     }
 
 
     dot.addEventListener("click", () => {
-        if (!dotPressed) {
+        if (!dotPressed && !displayResult) {
             displayCurrent.textContent += ".";
             displayFull.textContent += ".";
             dotPressed = true;
