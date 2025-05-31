@@ -119,9 +119,8 @@ function takeInput() {
             secondNumber = displayCurrent.textContent;
             displayResult = operate(selectedOperator, +firstNumber, +secondNumber);
             if (displayResult == "ERROR") {
+                clear();
                 displayCurrent.textContent = "ERROR";
-                firstNumber = secondNumber = selectedOperator = displayResult = null;
-                displayFull.textContent = "";
             } else {
                 displayCurrent.textContent = displayResult;
             }
