@@ -8,9 +8,7 @@ let result = document.querySelector(".result");
 let clearBtn = document.querySelector(".clear");
 let deleteBtn = document.querySelector(".back");
 let dot = document.querySelector(".dot");
-
-dotPressed = false;
-
+let dotPressed = false;
 
 function add(a, b) {
     return Math.round((a + b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
@@ -36,6 +34,8 @@ function operate(operator, a, b) {
             return subtract(a, b);
         case "x":
             return multiply(a, b);
+        case "*":
+            return multiply(a, b);
         case "/":
             if (a == 0 || b == 0) {
                 return "ERROR"
@@ -48,25 +48,69 @@ function operate(operator, a, b) {
 
 function takeInput() {
     let firstNumber, secondNumber, selectedOperator, displayResult;
+    let totalNumbers = 0;
     digits.forEach(digit => {
-        digit.addEventListener("click", (e) => {
-            if (displayResult || displayCurrent.textContent == "ERROR") {
-                clear();
-            }
-            displayCurrent.textContent += e.target.textContent;
-            displayFull.textContent += e.target.textContent;           
-        })
+        digit.addEventListener("click", typeNumber)
     })
 
     operators.forEach(operator => {
-        operator.addEventListener("click", (e) => {  
-            dotPressed = false;
-            /*if (displayCurrent.textContent == "ERROR") {
-                displayCurrent.textContent = "";
-            }*/
+        operator.addEventListener("click", typeOperator)
+    })
+
+    result.addEventListener("click", showResult)
+
+    clearBtn.addEventListener("click", clear);
+
+    dot.addEventListener("click", typeDot)
+
+    deleteBtn.addEventListener("click", deleteDigit)
+    
+    document.addEventListener("keydown", (e) => {
+        let key = e.key;
+        if (!isNaN(key)) {
+            typeNumber(e.key)
+        } else if (key == "+" || key == "-" || key == "*" || key == "/") {
+            typeOperator(key);
+        } else if (key == "Enter") {
+            e.preventDefault();
+            showResult();
+        } else if (key == ".") {
+            typeDot();
+        } else if (key == "Backspace") {
+            deleteDigit()
+        } else if (key == "Delete") {
+            clear();
+        }
+        
+    })
+
+    function typeNumber(e) {
+        if (displayResult || displayCurrent.textContent == "ERROR") {
+                clear();
+            }
+        if (totalNumbers < 10) {
+            try {
+                key = e.target.textContent;
+            } catch (err) {
+                key = e;
+            }
+            displayCurrent.textContent += key;
+            displayFull.textContent += key;
+            totalNumbers++;           
+        }
+    }
+
+    function typeOperator(e) {
+        dotPressed = false;
+            totalNumbers = 0;            
+            try {
+                key = e.target.textContent;
+            } catch (err) {
+                key = e;
+            }
             if (!firstNumber && !selectedOperator) {
                 firstNumber = displayCurrent.textContent;
-                selectedOperator = e.target.textContent;
+                selectedOperator = key;
                 displayFull.textContent += selectedOperator;
                 displayCurrent.textContent = "";
                 
@@ -74,36 +118,33 @@ function takeInput() {
                 secondNumber = displayCurrent.textContent;                              
                 if (+secondNumber != 0) {
                     displayResult = operate(selectedOperator, +firstNumber, +secondNumber);                  
-                    displayFull.textContent = displayResult + e.target.textContent;
+                    displayFull.textContent = displayResult + key;
                     firstNumber = displayResult;
                     displayCurrent.textContent = "";
-                    selectedOperator = e.target.textContent;
+                    selectedOperator = key;
                     displayResult = null;
-                    
                 } else {   
                     displayCurrent.textContent = "";
-                    displayFull.textContent = firstNumber + e.target.textContent;
-                    selectedOperator = e.target.textContent;
+                    displayFull.textContent = firstNumber + key;
+                    selectedOperator = key;
                 }
                 
             } else if (!displayResult && firstNumber != 0) {                
-                selectedOperator = e.target.textContent;
+                selectedOperator = key;
                 displayFull.textContent = firstNumber + selectedOperator;
                 
             } else {
                 displayResult = null;
                 firstNumber = displayCurrent.textContent;
-                selectedOperator = e.target.textContent;
+                selectedOperator = key;
                 displayFull.textContent = firstNumber + selectedOperator;
-                displayCurrent.textContent = "";
-                
+                displayCurrent.textContent = "";                
             }
-            
-        })
-    })
+    }
 
-    result.addEventListener("click", () => {
+    function showResult() {
         dotPressed = false;
+        totalNumbers = 0;
         if (!firstNumber || !selectedOperator) {
             displayResult = +(displayCurrent.textContent);
             displayCurrent.textContent = displayResult;
@@ -116,32 +157,20 @@ function takeInput() {
                 displayCurrent.textContent = "ERROR";
             } else {
                 displayCurrent.textContent = displayResult;
-            }
-            
+            }            
         }
-        
-    })
-
-    
-    clearBtn.addEventListener("click", clear);
-
-
-    function clear() {
-        firstNumber = secondNumber = selectedOperator = displayResult = null;
-        displayCurrent.innerHTML = displayFull.innerHTML = "";
-        dotPressed = false;
     }
 
-
-    dot.addEventListener("click", () => {
+    function typeDot() {
         if (!dotPressed && !displayResult) {
             displayCurrent.textContent += ".";
             displayFull.textContent += ".";
             dotPressed = true;
         }
-    })
+    }
 
-    deleteBtn.addEventListener("click", () => {
+    function deleteDigit() {
+        totalNumbers--;
         if (displayCurrent) {
             displayCurrent.textContent = displayCurrent.textContent.slice(0, -1);
             displayFull.textContent = displayFull.textContent.slice(0, -1);
@@ -152,10 +181,14 @@ function takeInput() {
         if (displayFull.textContent == "0") {
             displayFull.textContent = "";
         }
-    })
-    
+    }
 
+    function clear() {
+        firstNumber = secondNumber = selectedOperator = displayResult = null;
+        displayCurrent.innerHTML = displayFull.innerHTML = "";
+        dotPressed = false;
+        totalNumbers = 0;
+    }
 }
-
 
 takeInput()
