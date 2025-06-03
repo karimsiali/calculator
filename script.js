@@ -117,6 +117,9 @@ function takeInput() {
                 firstNumber *= - 1;
                 changeSign();
             }
+            if (firstNumber == "ERROR") {
+                firstNumber = 0;
+            }
             selectedOperator = key;
             displayFull.textContent = firstNumber + selectedOperator;
             displayCurrent.textContent = "";
@@ -176,7 +179,10 @@ function takeInput() {
                 clear();
                 displayCurrent.textContent = "ERROR";
             } else {
-                displayCurrent.textContent = displayResult;
+                if (displayResult.toString().length >= 10 || displayResult > 9999999999) {
+                    displayResult = displayResult.toExponential(3);
+                }
+                displayCurrent.textContent = displayResult.toLocaleString();
             }      
         }
     }
