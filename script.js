@@ -8,23 +8,24 @@ let clearBtn = document.querySelector(".clear");
 let deleteBtn = document.querySelector(".back");
 let negative = document.querySelector(".negative");
 let dot = document.querySelector(".dot");
+let perc = document.querySelector(".perc");
 let dotPressed = false;
 let negativeStatus = false;
 
 function add(a, b) {
-    return Math.round((a + b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
+    return Math.round((a + b) * (Math.pow(10, 4))) / (Math.pow(10, 4));
 }
 
 function subtract(a, b) {
-    return Math.round((a - b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
+    return Math.round((a - b) * (Math.pow(10, 4))) / (Math.pow(10, 4));
 }
 
 function multiply(a, b) {
-    return Math.round((a * b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
+    return Math.round((a * b) * (Math.pow(10, 4))) / (Math.pow(10, 4));
 }
 
 function divide(a, b) {
-    return Math.round((a / b) * (Math.pow(10, 10))) / (Math.pow(10, 10));
+    return Math.round((a / b) * (Math.pow(10, 4))) / (Math.pow(10, 4));
 }
 
 function operate(operator, a, b) {
@@ -67,6 +68,8 @@ function takeInput() {
     deleteBtn.addEventListener("click", deleteDigit);
 
     negative.addEventListener("click", changeSign);
+
+    perc.addEventListener("click", percent);
     
     document.addEventListener("keydown", (e) => {
         let key = e.key;
@@ -83,6 +86,8 @@ function takeInput() {
             deleteDigit()
         } else if (key == "Delete") {
             clear();
+        } else if (key == "%") {
+            percent();
         }
         
     })
@@ -226,6 +231,17 @@ function takeInput() {
         } else {
             negativeStatus = false;
             document.querySelector(".sign").textContent = ""
+        }
+    }
+
+    function percent() {
+        if (!firstNumber && displayCurrent.textContent) {
+            firstNumber = +displayCurrent.textContent;
+            displayResult = firstNumber / 100;
+            displayCurrent.textContent = displayResult;
+        } else if (displayResult) {
+            displayResult /= 100;
+            displayCurrent.textContent = displayResult ;
         }
     }
 }

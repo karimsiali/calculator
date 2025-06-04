@@ -18,9 +18,9 @@ body {
     align-items: center;
     flex-direction: column;
     border: 4px solid #181818;
-    border-radius: 26px;
+    border-radius: 12px;
     gap: 2rem;
-    padding: 6rem 1rem 2rem;
+    padding: 1rem;
     background-color: #0c1d38;
 }
 
@@ -29,8 +29,9 @@ body {
     height: 120px;
     padding: 8px;
     position: relative;
-    font-family: "Time";
+    font-family: "Time", serif;
     background-color: #435241;
+    box-shadow: inset 2px 2px 12px 0 #041601;
 }
 
 .full {
@@ -71,10 +72,8 @@ body {
     outline: none;
     color: #f1f1f1;
     font-size: 3rem;
+    font-family: "Inter", sans-serif;
     border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .clear {
@@ -86,21 +85,33 @@ body {
 }
 
 .digit, .dot, .back {
-    background-color: #777;
+    background-color: #55545480;
 }
 
 .perc, .negative {
     background-color: #2a5396;
 }
 
-img {
-    width: 20%;
-    aspect-ratio: 1 / 1;
-    border-radius: 6px;
-    
+.head {
+    font-family: "Norse", serif;
+    color: #f1f1f1;
+    width: 100%;
+    text-align: right;
 }
 
+.head :nth-child(1) {
+    font-size: 3rem;
+}
 
+.head :nth-child(2) {
+    font-size: 2rem;
+}
+
+.footer {
+    color: #f1f1f1;
+    width: 80%;
+    font-family: "Times New Roman", Times, serif;
+}
 
 
 
@@ -108,10 +119,15 @@ img {
 
 @font-face {
   font-family: "Time";
-  src: url(./Time-Normal.ttf);
+  src: url(./fonts/Time-Normal.ttf);
 }
 
 @font-face {
     font-family: "Norse";
-    src: url(./Norse.otf);
+    src: url(./fonts/Norse.otf);
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url(./fonts/Inter.ttc);
 }
