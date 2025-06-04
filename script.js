@@ -179,10 +179,10 @@ function takeInput() {
                 clear();
                 displayCurrent.textContent = "ERROR";
             } else {
-                if (displayResult.toString().length >= 10 || displayResult > 9999999999) {
+                if (displayResult > 9999999999) {
                     displayResult = displayResult.toExponential(3);
                 }
-                displayCurrent.textContent = displayResult.toLocaleString();
+                displayCurrent.textContent = displayResult;
             }      
         }
     }

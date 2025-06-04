@@ -18,8 +18,9 @@ body {
     align-items: center;
     flex-direction: column;
     border: 4px solid #181818;
+    border-radius: 26px;
     gap: 2rem;
-    padding: 1rem;
+    padding: 6rem 1rem 2rem;
     background-color: #0c1d38;
 }
 
@@ -64,14 +65,32 @@ body {
     gap: 1rem;
 }
 
-.buttons button {
+.buttons button{
     width: 20%;
     aspect-ratio: 1 / 1;
     outline: none;
-    background-color: #949393;
     color: #f1f1f1;
-    font-size: 2rem;
+    font-size: 3rem;
     border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clear {
+    background-color: #da2c2c;
+}
+
+.operator, .result {
+    background-color: #060e1b;
+}
+
+.digit, .dot, .back {
+    background-color: #777;
+}
+
+.perc, .negative {
+    background-color: #2a5396;
 }
 
 img {
@@ -90,4 +109,9 @@ img {
 @font-face {
   font-family: "Time";
   src: url(./Time-Normal.ttf);
+}
+
+@font-face {
+    font-family: "Norse";
+    src: url(./Norse.otf);
 }
